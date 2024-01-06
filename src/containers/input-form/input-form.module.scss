@@ -1,0 +1,21 @@
+.container {
+  &__inp-text {
+    width: 100%;
+    border: solid 1px #ccc;
+    border-radius: 4px; 
+    padding: 12px;
+    font-size: 24px;
+    color: #333;
+
+    &:disabled {
+      color: #d0d0d0;
+    } 
+  }
+
+  &__remaining {
+    font-size: 16px;
+    padding: 16px 0;
+    text-align: right;
+    font-family: consolas;
+  }
+}

@@ -1,0 +1,54 @@
+.container {
+  margin-top: 16px;
+  font-size: 24px;
+  height: 400px;
+  overflow-y: auto;
+
+  &__status {
+    padding: 16px;
+  }
+
+  &__list {
+    &__item {
+      width: 100%;
+      display: flex;
+      border-bottom: solid 1px #ccc;
+
+      &__content {
+        display: flex;
+        padding: 16px;
+        align-items: center;
+        flex: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        cursor: pointer;
+
+        &__inp-done {
+          width: 24px;
+          height: 24px;
+          margin: 0 12px 0 0;
+          flex: none;
+          cursor: pointer;
+
+          &:checked + .container__list__item__content__text {
+            text-decoration: line-through;
+          }
+        }
+
+        &__text {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+
+      &__btn-delete {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        font-size: 12px;
+      }
+    }
+  }
+}
