@@ -18,7 +18,7 @@ export const postItem = async (item: Todo): Promise<any> => {
     await axios.post(`/todos`, item);
     return item;
   } catch (e) {
-    (e as Error).message = "Oops, something went wrong!";
+    (e as Error).message = "Oops, Something went wrong!";
     throw e;
   }
 };
@@ -28,7 +28,7 @@ export const putItem = async (item: Todo): Promise<any> => {
     await axios.put(`/todos`, item);
     return item;
   } catch (e) {
-    (e as Error).message = "Oops, something went wrong!";
+    (e as Error).message = "Oops, Something went wrong!";
     throw e;
   }
 };
@@ -38,7 +38,7 @@ export const deleteItem = async (item: Todo): Promise<any> => {
     await axios.delete(`/todos`);
     return item;
   } catch (e) {
-    (e as Error).message = "Oops, something went wrong!";
+    (e as Error).message = "Oops, Something went wrong!";
     throw e;
   }
 };

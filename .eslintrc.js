@@ -18,6 +18,7 @@ module.exports = {
     "func-names": "off",
     "prettier/prettier": "error",
     "import/prefer-default-export": "off",
+    "import/extensions": "off",
     "no-unused-vars": "off",
     // or "@typescript-eslint/no-unused-vars": "off",
     "unused-imports/no-unused-imports": "error",

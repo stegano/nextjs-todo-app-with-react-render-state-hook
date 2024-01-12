@@ -1,9 +1,9 @@
 import { ITodo } from "../apis";
 
 export enum SharedKey {
-  TodoList = "TodoList",
+  TODO_LIST = "TodoList",
 }
 
 export type SharedDataType = {
-  [SharedKey.TodoList]: ITodo.TodoList;
+  [SharedKey.TODO_LIST]: ITodo.TodoList;
 };

@@ -2,10 +2,10 @@
 
 "use client";
 
-import { ITodo as ITodoApi, Todo as TodoApi } from "@/src/apis";
 import { ChangeEvent, useEffect } from "react";
 import classNames from "classnames/bind";
 import { IRenderState, useRenderState } from "react-render-state-hook";
+import { ITodo as ITodoApi, Todo as TodoApi } from "@/apis";
 import styles from "./list.module.scss";
 import { SharedDataType, SharedKey } from "../common.interface";
 
@@ -14,12 +14,11 @@ const cx = classNames.bind(styles);
 export function List() {
   const [, handleTodoUpdate, , todoUpdateState] = useRenderState<ITodoApi.Todo>();
   const [renderTodoList, handleTodoList, handleResetTodoList] = useRenderState<
-    SharedDataType[SharedKey.TodoList]
-  >(undefined, SharedKey.TodoList);
+    SharedDataType[SharedKey.TODO_LIST]
+  >(undefined, SharedKey.TODO_LIST);
 
   useEffect(() => {
-    // Initial Data Fetch
-    handleTodoList(() => TodoApi.fetchList());
+    handleTodoList(() => TodoApi.fetchList(), "fetchInitData");
     return () => {
       handleResetTodoList();
     };
@@ -31,14 +30,14 @@ export function List() {
         const { id, text, isDone } = todo;
         const isDisabled = todoUpdateState.status === IRenderState.DataHandlingStatus.IN_PROGRESS;
 
-        const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
+        const handleCheckButtonChange = async (event: ChangeEvent<HTMLInputElement>) => {
           try {
             await handleTodoUpdate(async () => {
               return TodoApi.putItem({
                 ...todo,
                 isDone: event.target.checked,
               });
-            });
+            }, "updateData");
             handleTodoList((prev) => {
               if (prev === undefined) {
                 return [];
@@ -60,11 +59,11 @@ export function List() {
           }
         };
 
-        const handleClick = async () => {
+        const handleDeleteButtonClick = async () => {
           try {
             await handleTodoUpdate(async () => {
               return TodoApi.deleteItem(todo);
-            });
+            }, "deleteData");
             handleTodoList((prev) => {
               if (prev === undefined) {
                 return [];
@@ -88,7 +87,7 @@ export function List() {
                 type="checkbox"
                 className={cx("container__list__item__content__inp-done")}
                 defaultChecked={isDone}
-                onChange={handleChange}
+                onChange={handleCheckButtonChange}
                 disabled={isDisabled}
               />
               <p className={cx("container__list__item__content__text")}>{text}</p>
@@ -96,7 +95,7 @@ export function List() {
             <button
               type="button"
               className={cx("container__list__item__btn-delete")}
-              onClick={handleClick}
+              onClick={handleDeleteButtonClick}
               disabled={isDisabled}
             >
               DELETE

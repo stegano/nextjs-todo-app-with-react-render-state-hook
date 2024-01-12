@@ -1,9 +1,9 @@
 "use client";
 
-import { ITodo as ITodoApi, Todo as TodoApi } from "@/src/apis";
 import { KeyboardEvent, useCallback, useMemo, useRef } from "react";
 import { IRenderState, useRenderState } from "react-render-state-hook";
 import classNames from "classnames/bind";
+import { ITodo as ITodoApi, Todo as TodoApi } from "@/apis";
 import styles from "./input-form.module.scss";
 import { SharedDataType, SharedKey } from "../common.interface";
 
@@ -13,8 +13,8 @@ export function InputForm() {
   const inputElRef = useRef<HTMLInputElement>(null);
   const [, handleTodoPost, , todoPostState] = useRenderState<ITodoApi.Todo>();
   const [renderTodoListFetch, handleTodoListFetch] = useRenderState<
-    SharedDataType[SharedKey.TodoList]
-  >(undefined, SharedKey.TodoList);
+    SharedDataType[SharedKey.TODO_LIST]
+  >(undefined, SharedKey.TODO_LIST);
 
   const handleInputKeydown = useCallback(
     async (event: KeyboardEvent) => {
@@ -27,12 +27,14 @@ export function InputForm() {
       if (event.key === "Enter") {
         event.preventDefault();
         try {
-          const item = await handleTodoPost(() =>
-            TodoApi.postItem({
-              id: Date.now().toString(32).slice(1, 10),
-              text: inputEl.value,
-              isDone: false,
-            }),
+          const item = await handleTodoPost(
+            () =>
+              TodoApi.postItem({
+                id: Date.now().toString(32).slice(1, 10),
+                text: inputEl.value,
+                isDone: false,
+              }),
+            "addData",
           );
           handleTodoListFetch((prev) => (prev ? [...prev, item] : [item]));
           inputEl.value = "";
@@ -59,6 +61,7 @@ export function InputForm() {
         onKeyDown={handleInputKeydown}
         disabled={isDisabled}
         ref={inputElRef}
+        placeholder="Please enter it here."
       />
       <p className={cx("container__remaining")}>
         {renderTodoListFetch(
