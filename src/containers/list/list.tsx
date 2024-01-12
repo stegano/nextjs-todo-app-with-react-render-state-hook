@@ -2,12 +2,14 @@
 
 "use client";
 
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useMemo } from "react";
 import classNames from "classnames/bind";
 import { IRenderState, useRenderState } from "react-render-state-hook";
 import { ITodo as ITodoApi, Todo as TodoApi } from "@/apis";
+import Skeleton from "react-loading-skeleton";
 import styles from "./list.module.scss";
 import { SharedDataType, SharedKey } from "../common.interface";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +25,18 @@ export function List() {
       handleResetTodoList();
     };
   }, [handleResetTodoList, handleTodoList]);
+
+  const $indicator = useMemo(() => {
+    return (
+      <Skeleton
+        width="100%"
+        count={5}
+        style={{ marginTop: 16, marginBottom: 16, borderRadius: 16 }}
+        baseColor="#eee"
+        highlightColor="#f3f3f3"
+      />
+    );
+  }, []);
 
   const $content = renderTodoList(
     (data) => {
@@ -105,8 +119,8 @@ export function List() {
       });
       return <ul className={cx("container__list")}>{$list}</ul>;
     },
-    <div className={cx("container__status")}>Ready</div>,
-    <div className={cx("container__status")}>Loading...</div>,
+    $indicator,
+    $indicator,
     <div className={cx("container__status")}>Oops, something went wrong!</div>,
   );
 

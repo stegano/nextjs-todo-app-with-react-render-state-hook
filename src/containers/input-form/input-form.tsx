@@ -1,9 +1,10 @@
 "use client";
 
-import { KeyboardEvent, useCallback, useMemo, useRef } from "react";
+import { KeyboardEvent, useCallback, useEffect, useMemo, useRef } from "react";
 import { IRenderState, useRenderState } from "react-render-state-hook";
 import classNames from "classnames/bind";
 import { ITodo as ITodoApi, Todo as TodoApi } from "@/apis";
+import Skeleton from "react-loading-skeleton";
 import styles from "./input-form.module.scss";
 import { SharedDataType, SharedKey } from "../common.interface";
 
@@ -11,8 +12,8 @@ const cx = classNames.bind(styles);
 
 export function InputForm() {
   const inputElRef = useRef<HTMLInputElement>(null);
-  const [, handleTodoPost, , todoPostState] = useRenderState<ITodoApi.Todo>();
-  const [renderTodoListFetch, handleTodoListFetch] = useRenderState<
+  const [, handleTodoPost, , todoPostState] = useRenderState<ITodoApi.Todo>(undefined, "POST");
+  const [renderTodoListFetch, handleTodoListFetch, , todoListState] = useRenderState<
     SharedDataType[SharedKey.TODO_LIST]
   >(undefined, SharedKey.TODO_LIST);
 
@@ -49,9 +50,28 @@ export function InputForm() {
   );
 
   const isDisabled = useMemo(
-    () => todoPostState.status === IRenderState.DataHandlingStatus.IN_PROGRESS,
-    [todoPostState.status],
+    () =>
+      todoPostState.status === IRenderState.DataHandlingStatus.IN_PROGRESS ||
+      todoListState.status === IRenderState.DataHandlingStatus.IN_PROGRESS,
+    [todoListState.status, todoPostState.status],
   );
+
+  useEffect(() => {
+    if (isDisabled === false) {
+      inputElRef.current?.focus();
+    }
+  }, [isDisabled]);
+
+  const $indicator = useMemo(() => {
+    return (
+      <Skeleton
+        width="3rem"
+        style={{ borderRadius: 16 }}
+        baseColor="#eee"
+        highlightColor="#f3f3f3"
+      />
+    );
+  }, []);
 
   return (
     <form className={cx("container")}>
@@ -70,9 +90,9 @@ export function InputForm() {
             const doneCount = data.filter((item) => item.isDone).length;
             return `${doneCount}/${total}`;
           },
-          "0/0",
-          "0/0",
-          "0/0",
+          $indicator,
+          $indicator,
+          $indicator,
         )}
       </p>
     </form>

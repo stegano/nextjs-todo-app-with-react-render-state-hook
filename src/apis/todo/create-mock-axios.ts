@@ -4,7 +4,7 @@ import Axios from "axios";
 export const createMockAxios = () => {
   const axiosInstance = Axios.create();
   const mock = new MockAdapter(axiosInstance, {
-    delayResponse: 300,
+    delayResponse: 1000,
   });
   mock
     .onGet("/todos")
