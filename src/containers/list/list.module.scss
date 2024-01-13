@@ -14,6 +14,12 @@
       display: flex;
       border-bottom: solid 1px #ccc;
 
+      &__text {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
       &__content {
         display: flex;
         padding: 16px;
@@ -34,12 +40,6 @@
           &:checked + .container__list__item__content__text {
             text-decoration: line-through;
           }
-        }
-
-        &__text {
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
         }
       }
 
