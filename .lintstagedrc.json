@@ -1,0 +1,8 @@
+{
+  "src/**/*.{ts,tsx}": [
+    "npm run eslint",
+    "bash -c 'npm run ts-check'", 
+    "npm run test"
+  ],
+  ".vscode/**": []
+}

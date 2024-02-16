@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "postinstall": "npx husky",
+    "lint-staged": "lint-staged",
+    "ts-check": "tsc --noEmit",
     "dev": "next dev",
     "dev:sb": "storybook dev -p 6006 -c ./storybook",
     "build": "next build",
@@ -52,6 +55,7 @@
     "eslint-plugin-storybook": "^0.6.15",
     "eslint-plugin-unused-imports": "^3.0.0",
     "jest": "^29.7.0",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.1.1",
     "storybook": "^7.6.7",
     "stylelint": "^16.1.0",
